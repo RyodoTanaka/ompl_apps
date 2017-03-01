@@ -1,0 +1,24 @@
+# OMPL APPs Repository
+This Repository is for practice about the OMPL.
+
+## Installation
+### Installation of OMPL
+Based on the [official installation shell script](http://ompl.kavrakilab.org/installation.html), I modified something that is not worked.
+If you've not installed the OMPL library yet, run the shell script like following. And this script bring you OMPL-1.2.1 version.
+
+```bash
+$ git clone https://github.com/RyodoTanaka/ompl_apps.git
+$ cd ompl_apps
+$ chmod u+x install-ompl-ubuntu.sh
+```
+
+And then, You can choose the option as you wish.
+
+- `$ ./install-ompl-ubuntu.sh` will install OMPL without Python bindings
+- `$ ./install-ompl-ubuntu.sh --python` will install OMPL with Python bindings
+- `$ ./install-ompl-ubuntu.sh --app` will install OMPL.app with Python bindings
+
+#### !!! CAUTION !!!
+If you choose `--python` or `--app` option, OMPL will be installed with Python bindings.  
+BUT, It takes **ABOUT 8 HOURS** or more....
+This is issued on [here](https://bitbucket.org/ompl/ompl/issues/305/omplapp-installation-stuck-at-geometric) and [here](https://bitbucket.org/ompl/ompl/issues/258/update-bindings-after-reinstalling-ompl).
