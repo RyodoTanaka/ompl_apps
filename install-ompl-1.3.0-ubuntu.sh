@@ -27,7 +27,7 @@ install_common_dependencies()
         sudo apt-get -y install g++-5 cmake libboost1.55-all-dev libeigen3-dev libode-dev
         export CXX=g++-5
     fi
-    export MAKEFLAGS="-j `nproc`"
+    export MAKEFLAGS="-j`nproc`"
 }
 
 install_python_binding_dependencies()
@@ -60,13 +60,13 @@ install_app_dependencies()
         sudo apt-get -y install libccd-dev
     else
         wget -O - https://github.com/danfis/libccd/archive/v2.0.tar.gz | tar zxf -
-        cd libccd-2.0; cmake .; sudo -E make install
+        cd libccd-2.0; cmake .; sudo -E make $MAKEFLAGS  install;
 		export PKG_CONFIG_PATH=`pwd`:$PKG_CONFIG_PATH
 		cd ..
     fi
     # install fcl
     wget -O - https://github.com/flexible-collision-library/fcl/archive/0.5.0.tar.gz | tar zxf -
-    cd fcl-0.5.0; cmake .; sudo -E make install
+    cd fcl-0.5.0; cmake .; sudo -E make $MAKEFLAGS install;
 	export PKG_CONFIG_PATH=`pwd`:$PKG_CONFIG_PATH
 	cd ..
 }
@@ -84,10 +84,10 @@ install_ompl()
     cd build/Release
     cmake ../..
     if [ ! -z $1 ]; then
-        make update_bindings
+        make $MAKEFLAGS update_bindings
     fi
-    make
-    sudo make install
+    make $MAKEFLAGS
+    sudo make $MAKEFLAGS install
 }
 
 for i in "$@"
@@ -112,7 +112,7 @@ esac
 done
 
 
-if [ ! -z $PYTHON && ! -z $TRUSTY && `uname -m`=="i386" ]; then
+if [[ ! -z $PYTHON && ! -z $TRUSTY && `uname -m` = "i386" ]]; then
     echo "There is no pre-built binary of CastXML available for 32-bit Ubuntu 14.04"
     echo "To generate the Python bindings, you first need to compile CastXML from source."
     echo "Alternatively, you could change your OS to either a newer version of Ubuntu or 64-bit Ubuntu 14.04."
