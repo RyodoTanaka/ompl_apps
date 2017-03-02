@@ -18,9 +18,9 @@ install_common_dependencies()
     sudo apt-get -y upgrade
     # On Ubuntu 14.04 we need to add a PPA to get a recent compiler (g++-4.8 is too old).
     # We also need to specify a Boost version, since the default Boost is too old.
-    sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+    sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
     sudo apt-get update
-    sudo apt-get install gcc-5 g++-5
+    sudo apt-get -y install gcc-5 g++-5
     sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-5 1
     #
     # We explicitly set the C++ compiler to g++, the default GNU g++ compiler. This is
@@ -69,24 +69,24 @@ install_app_dependencies()
     # fi
     sudo apt-get -y install freeglut3-dev libassimp-dev python-opengl python-flask python-celery
     # install additional python dependencies via pip
-    sudo -H pip install -vU PyOpenGL-accelerate
-    # sudo apt-add-repository ppa:imnmfotmal/libccd
+    # sudo -H pip install -vU PyOpenGL-accelerate
+    # sudo apt-add-repository -y ppa:imnmfotmal/libccd
     # sudo update
-    # sudo apt-get install fcl libccd
+    # sudo apt-get -y install fcl libccd
     # install libccd
-    # sudo apt-add-repository ppa:libccd-debs/ppa
+    # sudo apt-add-repository -y ppa:libccd-debs/ppa
     # sudo apt-get update
-    # sudo apt-get install libccd-dev
+    # sudo apt-get -y install libccd-dev
+	export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH
     if [ -z $TRUSTY ]; then
         sudo apt-get -y install libccd-dev
     else
         wget -O - https://github.com/danfis/libccd/archive/v2.0.tar.gz | tar zxf -
-        cd libccd-2.0; cmake .; sudo -E make $MAKEFLAGS install; cd ..
+        cd libccd-2.0; cmake .; sudo -E make $MAKEFLAGS install; sudo cp -rf ccd.pc /usr/local/lib/pkgconfig/; cd ..
     fi
-    export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH
-    # install fcl
+    #install fcl
     wget -O - https://github.com/flexible-collision-library/fcl/archive/0.5.0.tar.gz | tar zxf -
-    cd fcl-0.5.0; cmake .; sudo -E make $MAKEFLAGS install; cd ..
+    cd fcl-0.5.0; cmake .; sudo -E make $MAKEFLAGS install; sudo cp -rf fcl.pc /usr/local/lib/pkgconfig/; cd ..
 }
 
 install_ompl()
@@ -96,7 +96,7 @@ install_ompl()
     else
         OMPL="omplapp"
     fi
-    wget -O - https://bitbucket.org/ompl/ompl/downloads/$OMPL-1.2.1-Source.tar.gz | tar zxf -
+    wget -O - https://bitbucket.org/ompl/ompl/downloads/$OMPL-1.3.0-Source.tar.gz | tar zxf -
     cd $OMPL-1.2.1-Source
     mkdir -p build/Release
     cd build/Release
