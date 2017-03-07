@@ -27,8 +27,8 @@ std::string setFilename(const std::string dir_name)
   std::ostringstream os ;
   
   os << file_path.c_str();
-  os << std::setw( 2 ) << std::setfill( '0' ) << pnow->tm_year%100 << std::setw( 2 ) << std::setfill( '0' ) << pnow->tm_mon+1 <<  std::setw( 2 ) << std::setfill( '0' ) << pnow->tm_mday <<  "_";
-  os <<  std::setw( 2 ) << std::setfill( '0' ) << pnow->tm_hour <<  std::setw( 2 ) << std::setfill( '0' ) << pnow->tm_min <<  std::setw( 2 ) << std::setfill( '0' ) << pnow->tm_sec << ".dat";
+  os << pnow->tm_year+1900 << "-" << std::setw( 2 ) << std::setfill( '0' ) << pnow->tm_mon+1 << "-" << std::setw( 2 ) << std::setfill( '0' ) << pnow->tm_mday << "-";
+  os <<  std::setw( 2 ) << std::setfill( '0' ) << pnow->tm_hour << "-" << std::setw( 2 ) << std::setfill( '0' ) << pnow->tm_min << "-" << std::setw( 2 ) << std::setfill( '0' ) << pnow->tm_sec << ".dat";
   return os.str();
 }
 
@@ -101,6 +101,5 @@ void planWithSimpleSetup(void)
 int main(int argv, char** argc)
 {
   planWithSimpleSetup();
-  std::cout << argc[0] << std::endl;
   return 0;
 }
