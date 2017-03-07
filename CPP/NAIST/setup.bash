@@ -2,11 +2,12 @@
 
 # ENV PATH
 export OMPL_APPS_DIR=`pwd`
-# List of the Execution files
-EXE_FILES=$(ls ./bin)
 
 # This Script's Path
-SCRIPT_PATH=$(dirname ${BASH_SOURCE:-$0})
+SCRIPT_PATH=$( dirname ${BASH_SOURCE:-$0} )
+
+# List of the Execution files
+EXE_FILES=$(ls ${SCRIPT_PATH}/bin)
 
 function _func_complete_omplrun()
 {
