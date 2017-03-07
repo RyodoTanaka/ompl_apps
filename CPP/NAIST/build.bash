@@ -1,9 +1,9 @@
 #!/bin/bash
 
-SCRIPT_PATH=$(dirname ${BASH_SOURCE:-$0})
+SCRIPT_PATH=$( dirname ${BASH_SOURCE:-$0} )
 CURRENT=$(pwd)
 
-if [ $1 = "clean" ]; then
+if [ "$1" == "clean" ]; then
     echo "Remove bin/ build/ directories..."
     rm -rf ${SCRIPT_PATH}/bin
     rm -rf ${SCRIPT_PATH}/build
