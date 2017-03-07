@@ -7,9 +7,6 @@ SCRIPT_PATH=$( dirname ${BASH_SOURCE:-$0} )
 export OMPL_APPS_DIR=${SCRIPT_PATH}
 export OMPL_APPS_EXE_FILES=$(ls ${SCRIPT_PATH}/bin)
 
-# List of the Execution files
-EXE_FILES=$(ls ${SCRIPT_PATH}/bin)
-
 function _func_complete_omplrun()
 {
     local cur=${COMP_WORDS[COMP_CWORD]}
