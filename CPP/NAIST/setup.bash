@@ -20,7 +20,10 @@ fi
 
 function func_ompl()
 {
-    `find ${SCRIPT_PATH} -name $1`
+    core=$(find ${SCRIPT_PATH} -name $1)
+    option=$(echo $@ | sed -e "s/$1//g")
+    command=$core$option
+    $command
 }
 
 alias omplrun=func_ompl
