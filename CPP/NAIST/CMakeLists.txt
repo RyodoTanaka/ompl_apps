@@ -10,8 +10,6 @@ set(CMAKE_BUILD_TYPE Release)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ../bin)
 
-set(ENV{OMPL_CPP_SAMPLE_DIR} ./)
-
 project(OMPL_NAIST_SAMPLE)
 
 # For OMPL
