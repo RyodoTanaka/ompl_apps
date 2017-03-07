@@ -11,21 +11,22 @@ namespace ob = ompl::base;
 namespace og = ompl::geometric;
 
 // ファイル名指定用関数
-std::string setFilename(const std::string filepath)
+std::string setFilename(const std::string dir_name)
 {
-  std::string command = "mkdir -p " + filepath;
-  std::cout << command.c_str() << std::endl;
-  const int ret = system(command.c_str());
-  if (-1 == ret)
-{
-    printf("Error creating directory!n");
+  std::string file_path = std::getenv("OMPL_APPS_DIR");
+  file_path = file_path + "/result/" +  dir_name + "/";
+  std::string command = "mkdir -p " + file_path;
+  int ret = system(command.c_str());
+  if (ret<0){
+    std::cout << "!!! Error creating directory !!!" << std::endl;
     exit(1);
-}
+  }
+  
   time_t now = time(NULL);
   struct tm *pnow = localtime(&now);
   std::ostringstream os ;
   
-  os << filepath.c_str();
+  os << file_path.c_str();
   os << std::setw( 2 ) << std::setfill( '0' ) << pnow->tm_year%100 << std::setw( 2 ) << std::setfill( '0' ) << pnow->tm_mon+1 <<  std::setw( 2 ) << std::setfill( '0' ) << pnow->tm_mday <<  "_";
   os <<  std::setw( 2 ) << std::setfill( '0' ) << pnow->tm_hour <<  std::setw( 2 ) << std::setfill( '0' ) << pnow->tm_min <<  std::setw( 2 ) << std::setfill( '0' ) << pnow->tm_sec << ".dat";
   return os.str();
@@ -86,7 +87,7 @@ void planWithSimpleSetup(void)
     std::cout <<"------------------------------------" << std::endl;
     
     std::string filename;
-    filename = setFilename("../result/GeomPlanningSE2/"); 
+    filename = setFilename("GeomPlanningSE2"); 
     std::ofstream ofs(filename.c_str());
     ss.getSolutionPath().printAsMatrix(ofs);
     std::cout << "Result Path is saved in ";
