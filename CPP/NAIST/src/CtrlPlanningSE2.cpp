@@ -126,8 +126,12 @@ void planWithSimpleSetup(void)
     ss.getSolutionPath().print(std::cout);
 
     // Print the solution path to a file
-    std::ofstream ofs("path.dat");
+    std::string filename;
+    filename = setFilename("CtrlPlanningSE2");
+    std::ofstream ofs(filename.c_str());
     ss.getSolutionPath().printAsMatrix(ofs);
+    std::cout << "Result Path is saved in ";
+    std::cout << filename.c_str() << std::endl;
   }
   else
     std::cout << "No solution found" << std::endl;
