@@ -18,5 +18,11 @@ include_directories(${OMPL_INCLUDE_DIRS})
 link_directories(${OMPL_LIBRARY_DIRS})
 add_definitions(${OMPL_DEFINITIONS})
 
-add_executable(GeomPlanningSE2 GeomPlanningSE2.cpp)
-target_link_libraries(GeomPlanningSE2 ${OMPL_LIBRARIES} m)
+# Common
+add_subdirectory(src/IO)
+
+add_executable(GeomPlanningSE2 src/GeomPlanningSE2.cpp)
+target_link_libraries(GeomPlanningSE2 FileSave ${OMPL_LIBRARIES} m)
+
+add_executable(CtrlPlanningSE2 src/CtrlPlanningSE2.cpp)
+target_link_libraries(CtrlPlanningSE2 FileSave ${OMPL_LIBRARIES} m)
