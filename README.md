@@ -48,3 +48,6 @@ $ source setup.bash
 ```
 This `setup.bash` brings you `omplrun` command.  
 `omplrun` command automatically detect the execution files using **Tab Completion**.
+
+### Python programs
+Run each python programs in usual way !
