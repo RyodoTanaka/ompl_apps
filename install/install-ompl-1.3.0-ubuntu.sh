@@ -27,6 +27,13 @@ install_common_dependencies()
         sudo apt-get -y install g++-5 cmake libboost1.55-all-dev libeigen3-dev libode-dev
         export CXX=g++-5
     fi
+
+    # g++-5 install
+    sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+    sudo apt-get update
+    sudo apt-get install gcc-5 g++-5
+    sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-5 1
+    
     export MAKEFLAGS="-j`nproc`"
 }
 
