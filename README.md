@@ -3,7 +3,7 @@ This Repository is for practice about the OMPL.
 
 #### Environment
 
- :---: | :---: |
+| :---: | :---: |
 | **PC** | Lenovo ThinkPad X240 |
 | **Prosessor** |  Intel Core i7-4600U (2.10GHz, 4MB, 1600MHz) |
 | **RAM** | PC3-12800 DDR3L (8GB) |
