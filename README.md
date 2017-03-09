@@ -1,5 +1,5 @@
 # OMPL APPs Repository
-This Repository is for practice about the OMPL.
+This Repository is for practice about the OMPL.  
 On `CPP/NAIST` directory, there are samples that texted on the [NAIST Online Text](https://robotics.naist.jp/edu/text/?Robotics%2FOMPL).
 
 #### Environment
