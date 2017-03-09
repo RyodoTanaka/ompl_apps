@@ -1,16 +1,15 @@
 # OMPL APPs Repository
 This Repository is for practice about the OMPL.
 
-## Installation
 #### Environment
-| | |
-| :---: | :---: |
+ :---: | :---: |
 | **PC** | Lenovo ThinkPad X240 |
 | **Prosessor** |  Intel Core i7-4600U (2.10GHz, 4MB, 1600MHz) |
 | **RAM** | PC3-12800 DDR3L (8GB) |
 | **OS** | Ubuntu 14.04 LTS 64bit (Trusty) |
 | **Kernel** | 3.13.0-108-generic |
 
+## Installation
 ### Installation of OMPL
 Based on the [official installation shell script](http://ompl.kavrakilab.org/installation.html), I modified something that is not worked.
 If you've not installed the OMPL library yet, run the shell script like following. And this script bring you OMPL-1.3.0 version.
