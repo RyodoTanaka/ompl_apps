@@ -1,5 +1,6 @@
 # OMPL APPs Repository
 This Repository is for practice about the OMPL.
+On `CPP/NAIST` directory, there are samples that texted on the [NAIST Online Text](https://robotics.naist.jp/edu/text/?Robotics%2FOMPL).
 
 #### Environment
 
@@ -32,3 +33,18 @@ And then, You can choose the option as you wish.
 If you choose `--python` or `--app` option, OMPL will be installed with Python bindings.  
 BUT, It takes **ABOUT 8 HOURS** or more....
 This is issued on [here](https://bitbucket.org/ompl/ompl/issues/305/omplapp-installation-stuck-at-geometric) and [here](https://bitbucket.org/ompl/ompl/issues/258/update-bindings-after-reinstalling-ompl).
+
+## How to execute ?
+### CPP programs
+First of all, you need to compile the programs.
+```bash
+$ cd <ompl_apps>
+$ cd <CPP directory>
+$ source build.sh
+```
+And then run `setup.bash`
+```bash
+$ source setup.bash
+```
+This `setup.bash` brings you `omplrun` command.  
+`omplrun` command automatically detect the execution files using **Tab Completion**.
