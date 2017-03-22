@@ -17,7 +17,7 @@ fi
 
 function func_ompl()
 {
-    core=$(find ${SCRIPT_PATH} -name $1)
+    core=$(find ${SCRIPT_PATH}/bin -name $1)
     option=$(echo $@ | sed -e "s/$1//g")
     command=$core$option
     $command
