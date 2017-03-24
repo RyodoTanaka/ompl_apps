@@ -4,9 +4,6 @@
 # http://ompl.kavrakilab.org/install-ompl-ubuntu.sh
 # I modified about installation of g++-5
 
-mkdir libs
-cd libs
-
 if [ `lsb_release -rs` == "14.04" ]; then
     export TRUSTY=1
 fi
@@ -96,7 +93,7 @@ install_ompl()
     else
         OMPL="omplapp"
     fi
-    wget -O - https://bitbucket.org/ompl/ompl/downloads/$OMPL-1.3.0-Source.tar.gz | tar zxf -
+    wget -O - https://bitbucket.org/ompl/ompl/downloads/$OMPL-1.2.1-Source.tar.gz | tar zxf -
     cd $OMPL-1.2.1-Source
     mkdir -p build/Release
     cd build/Release
