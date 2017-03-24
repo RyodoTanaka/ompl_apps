@@ -14,7 +14,8 @@ On `CPP/NAIST` directory, there are samples that texted on the [NAIST Online Tex
 
 ## Installation
 ### Installation of OMPL
-Based on the [official installation shell script](http://ompl.kavrakilab.org/installation.html), I modified something that is not worked.
+**!! If you want to compile with NAIST samples, BUILD 1.0.0 VERSION !!**  
+Based on the [official installation shell script](http://ompl.kavrakilab.org/installation.html), I modified something that is not worked.  
 If you've not installed the OMPL library yet, run the shell script like following. And this script bring you OMPL-1.3.0 version.
 
 ```bash
