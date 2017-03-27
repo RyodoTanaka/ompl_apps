@@ -40,5 +40,5 @@ target_link_libraries(GeomPlanningSE2_Info FileSave ${Boost_LIBRARIES} ${OMPL_LI
 add_executable(GeomPlanningSE2_SBL src/GeomPlanningSE2_SBL.cpp)
 target_link_libraries(GeomPlanningSE2_SBL FileSave ${Boost_LIBRARIES} ${OMPL_LIBRARIES} m)
 
-add_executable(GeomPlanningSE3 src/GeomPlanningSE3.cpp)
-target_link_libraries(GeomPlanningSE3 FileSave ${Boost_LIBRARIES} ${OMPL_LIBRARIES} m)
+# add_executable(GeomPlanningSE3 src/GeomPlanningSE3.cpp)
+# target_link_libraries(GeomPlanningSE3 FileSave ${Boost_LIBRARIES} ${OMPL_LIBRARIES} m)
