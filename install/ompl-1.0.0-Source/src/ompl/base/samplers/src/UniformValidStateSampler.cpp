@@ -60,6 +60,7 @@ bool ompl::base::UniformValidStateSampler::sampleNear(State *state, const State 
 {
     unsigned int attempts = 0;
     bool valid = false;
+    std::cout << "You reached ompl::base::UniformValidStateSampler::sampleNear" << std::endl;
     do
     {
         sampler_->sampleUniformNear(state, near, distance);
