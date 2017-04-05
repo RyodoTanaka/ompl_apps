@@ -6,7 +6,7 @@ set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
 set(CMAKE_CXX_FLAGS_DEBUG "-g -O0")
 
-set(CMAKE_BUILD_TYPE Release)
+set(CMAKE_BUILD_TYPE Debug)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ../bin)
 
@@ -40,5 +40,5 @@ target_link_libraries(GeomPlanningSE2_Info FileSave ${Boost_LIBRARIES} ${OMPL_LI
 add_executable(GeomPlanningSE2_SBL src/GeomPlanningSE2_SBL.cpp)
 target_link_libraries(GeomPlanningSE2_SBL FileSave ${Boost_LIBRARIES} ${OMPL_LIBRARIES} m)
 
-# add_executable(GeomPlanningSE3 src/GeomPlanningSE3.cpp)
-# target_link_libraries(GeomPlanningSE3 FileSave ${Boost_LIBRARIES} ${OMPL_LIBRARIES} m)
+add_executable(GeomPlanningSE2_RyodoSBL src/GeomPlanningSE2_RyodoSBL.cpp)
+target_link_libraries(GeomPlanningSE2_RyodoSBL FileSave ${Boost_LIBRARIES} ${OMPL_LIBRARIES} m)
