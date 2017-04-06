@@ -56,7 +56,6 @@ void ompl::base::CompoundStateSampler::sampleUniformNear(State *state, const Sta
   State **comps = state->as<CompoundState>()->components;
   State **nearComps = near->as<CompoundState>()->components;
   for (unsigned int i = 0 ; i < samplerCount_ ; ++i){
-    //std::cout << "weightImportance_[" << i << "] : " << weightImportance_[i] << std::endl;
     if (weightImportance_[i] > std::numeric_limits<double>::epsilon()){
       samplers_[i]->sampleUniformNear(comps[i], nearComps[i], distance * weightImportance_[i]);
      }

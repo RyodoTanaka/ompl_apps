@@ -66,7 +66,7 @@ namespace ompl
 
         /** \brief Generate a random real within given bounds: [\e lower_bound, \e upper_bound) */
         double uniformReal(double lower_bound, double upper_bound)
-        {
+        { 
             assert(lower_bound <= upper_bound);
             return (upper_bound - lower_bound) * uni_() + lower_bound;
         }
