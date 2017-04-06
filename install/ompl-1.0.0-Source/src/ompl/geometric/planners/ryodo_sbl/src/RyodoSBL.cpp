@@ -148,7 +148,7 @@ ompl::base::PlannerStatus ompl::geometric::RyodoSBL::solve(const base::PlannerTe
 
         Motion *existing = selectMotion(tree);
         assert(existing);
-        if (!sampler_->sampleNear(xstate, existing->state, maxDistance_))
+        if (!sampler_->sampleNearbyProbability(xstate, existing->state, maxDistance_))
             continue;
 
         /* create a motion */
@@ -197,8 +197,7 @@ bool ompl::geometric::RyodoSBL::checkSolution(bool start, TreeData &tree, TreeDa
 
             si_->copyState(connect->state, connectOther->state);
             connect->parent = motion;
-            connect->root = motion->root;
-            motion->children.push_back(connect);
+            connect->root = motion->root;            motion->children.push_back(connect);
             addMotion(tree, connect);
 
             if (isPathValid(tree, connect) && isPathValid(otherTree, connectOther))
