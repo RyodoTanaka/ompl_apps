@@ -85,7 +85,45 @@ bool ompl::base::ObstacleBasedValidStateSampler::sampleNear(State *state, const 
     // find invalid state nearby
     unsigned int attempts = 0;
     bool valid = true;
-    std::cout << "You reached mpl::base::ObstacleBasedValidStateSampler::sampleNear" << std::endl;
+    
+    do
+    {
+        sampler_->sampleUniformNear(state, near, distance);
+        valid = si_->isValid(state);
+        ++attempts;
+    } while (valid && attempts < attempts_);
+    if (valid)
+        return false;
+
+    // find a valid state
+    State *temp = si_->allocState();
+    attempts = 0;
+    do
+    {
+        sampler_->sampleUniform(temp);
+        valid = si_->isValid(temp);
+        ++attempts;
+    } while (!valid && attempts < attempts_);
+
+
+    // keep the last valid state, before collision
+    if (valid)
+    {
+        std::pair<State*, double> fail(state, 0.0);
+        si_->checkMotion(temp, state, fail);
+    }
+
+    si_->freeState(temp);
+
+    return valid;
+}
+
+bool ompl::base::ObstacleBasedValidStateSampler::sampleNearbyProbability(State *state, const State *near, const double distance)
+{
+    // find invalid state nearby
+    unsigned int attempts = 0;
+    bool valid = true;
+     std::cout << "You Reached ObstacleBasedValidStateSampler sampleNearbyProbability()" << std::endl;
     do
     {
         sampler_->sampleUniformNear(state, near, distance);

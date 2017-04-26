@@ -90,7 +90,43 @@ bool ompl::base::MaximizeClearanceValidStateSampler::sampleNear(State *state, co
     unsigned int attempts = 0;
     bool valid = false;
     double dist = 0.0;
-    std::cout << "You reached ompl::base::MaximizeClearanceValidStateSampler::sampleNear" << std::endl;
+
+    do
+    {
+        sampler_->sampleUniformNear(state, near, distance);
+        valid = si_->getStateValidityChecker()->isValid(state, dist);
+        ++attempts;
+    } while (!valid && attempts < attempts_);
+
+    if (valid)
+    {
+        bool validW = false;
+        double distW = 0.0;
+        attempts = 0;
+        while (attempts < improveAttempts_)
+        {
+            sampler_->sampleUniformNear(work_, near, distance);
+            validW = si_->getStateValidityChecker()->isValid(work_, distW);
+            ++attempts;
+            if (validW && distW > dist)
+            {
+                dist = distW;
+                si_->copyState(state, work_);
+            }
+        }
+        return true;
+    }
+    else
+        return false;
+}
+
+bool ompl::base::MaximizeClearanceValidStateSampler::sampleNearbyProbability(State *state, const State *near, const double distance)
+{
+    unsigned int attempts = 0;
+    bool valid = false;
+    double dist = 0.0;
+    std::cout << "You reached ompl::base::MaximizeClearanceValidStateSampler sampleNearbyProbability()" << std::endl;
+    
     do
     {
         sampler_->sampleUniformNear(state, near, distance);

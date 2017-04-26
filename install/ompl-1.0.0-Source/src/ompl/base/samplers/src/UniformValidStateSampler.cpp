@@ -75,7 +75,7 @@ bool ompl::base::UniformValidStateSampler::sampleNearbyProbability(State *state,
   unsigned int attempts = 0;
   bool valid = false;
 
-  std::cout << "You Reached sampleNearbyProbability()" << std::endl;
+  std::cout << "You Reached UniformValidStateSampler sampleNearbyProbability()" << std::endl;
   
   do
     {
