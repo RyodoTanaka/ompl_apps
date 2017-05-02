@@ -98,13 +98,6 @@ public:
         throw ompl::Exception("MyValidStateSampler::sampleNear", "not implemented");
         return false;
     }
-
-  virtual bool sampleNearbyProbability(ob::State*, const ob::State*, const double)
-  {
-    std::cout << "You Reached MyvalidStateSampler sampleNearbyProbability" << std::endl;
-    throw ompl::Exception("MyValidStateSampler::sampleNear", "not implemented");
-    return false;
-  }
   
 protected:
     ompl::RNG rng_;

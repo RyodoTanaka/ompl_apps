@@ -61,22 +61,8 @@ bool ompl::base::UniformValidStateSampler::sampleNear(State *state, const State 
   unsigned int attempts = 0;
   bool valid = false;
 
-  do
-    {
-      sampler_->sampleUniformNear(state, near, distance);
-      valid = si_->isValid(state);
-      ++attempts;
-    } while (!valid && attempts < attempts_);
-  return valid;
-}
+  std::cout << "You Reached UniformValidStateSampler::sampleNear()" << std::endl;
 
-bool ompl::base::UniformValidStateSampler::sampleNearbyProbability(State *state, const State *near, const double distance)
-{
-  unsigned int attempts = 0;
-  bool valid = false;
-
-  std::cout << "You Reached UniformValidStateSampler sampleNearbyProbability()" << std::endl;
-  
   do
     {
       sampler_->sampleUniformNear(state, near, distance);

@@ -59,7 +59,6 @@ namespace ompl
 
             virtual bool sample(State *state);
             virtual bool sampleNear(State *state, const State *near, const double distance);
-            virtual bool sampleNearbyProbability(State *state, const State *near, const double distance);
 
             /** \brief Get the standard deviation used when sampling */
             double getStdDev() const

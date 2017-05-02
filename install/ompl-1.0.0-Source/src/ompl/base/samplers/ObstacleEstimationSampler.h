@@ -1,7 +1,7 @@
 /*********************************************************************
 * Software License Agreement (BSD License)
 *
-*  Copyright (c) 2010, Rice University
+*  Copyright (c) 2017, Kyushu Insitute of Technology
 *  All rights reserved.
 *
 *  Redistribution and use in source and binary forms, with or without
@@ -32,51 +32,32 @@
 *  POSSIBILITY OF SUCH DAMAGE.
 *********************************************************************/
 
-/* Author: Ioan Sucan */
+#ifndef OMPL_BASE_SAMPLERS_PROBABLIC_UNIFORM_VALID_STATE_SAMPLER_
+#define OMPL_BASE_SAMPLERS_PROBABLIC_UNIFORM_VALID_STATE_SAMPLER_
 
-#ifndef OMPL_BASE_SAMPLERS_OBSTACLE_BASED_VALID_STATE_SAMPLER_
-#define OMPL_BASE_SAMPLERS_OBSTACLE_BASED_VALID_STATE_SAMPLER_
-
+/* Author: Ryodo Tanaka */
 #include "ompl/base/ValidStateSampler.h"
 #include "ompl/base/StateSampler.h"
 
+/// @cond IGNORE
 namespace ompl
 {
-    namespace base
+  namespace base{
+    class ObstacleEstimationSampler : public ValidStateSampler
     {
+    public:
+      ObstacleEstimationSampler(const SpaceInformation *si);
 
+      virtual ~ObstacleEstimationSampler(){};
 
-        /** \brief Generate valid samples using obstacle based sampling.  First
-            sample an invalid state, then sample a valid state.  Then, interpolate from
-            the invalid state to the valid state, returning the first valid state
-            encountered.
+      virtual bool sample(State *state);
+      virtual bool sampleNear(State *state, const State *near, const double distance);
 
-            @par External documentation
-            N. M. Amato, O. B. Bayazit, L. K. Dale, C. Jones, and D. Vallejo, OBPRM: an obstacle-based PRM for 3D workspaces, in <em> Third Workshop on the Algorithmic Foundations of Robotics</em>, pp. 155-168, 1998. [[URL]](https://parasol.tamu.edu/groups/amatogroup/research/OBPRM/)
-        */
-        class ObstacleBasedValidStateSampler : public ValidStateSampler
-        {
-        public:
-
-            /** \brief Constructor */
-            ObstacleBasedValidStateSampler(const SpaceInformation *si);
-
-            virtual ~ObstacleBasedValidStateSampler()
-            {
-            }
-
-            virtual bool sample(State *state);
-            virtual bool sampleNear(State *state, const State *near, const double distance);
-
-        protected:
-
-            /** \brief The sampler to build upon */
+    protected:
+      /** \brief The sampler to build upon */
             StateSamplerPtr sampler_;
-
-        };
-
-    }
+    };
+  }
 }
 
-
-#endif
+# endif

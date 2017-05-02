@@ -60,7 +60,7 @@ namespace ompl
 
             virtual bool sample(State *state);
             virtual bool sampleNear(State *state, const State *near, const double distance);
-            bool sampleNearbyProbability(State *state, const State *near, const double distance);
+            
         protected:
 
             /** \brief The sampler to build upon */

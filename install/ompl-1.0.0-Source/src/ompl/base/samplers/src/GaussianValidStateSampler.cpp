@@ -92,29 +92,3 @@ bool ompl::base::GaussianValidStateSampler::sampleNear(State *state, const State
     si_->freeState(temp);
     return result;
 }
-
-bool ompl::base::GaussianValidStateSampler::sampleNearbyProbability(State *state, const State *near, const double distance)
-{
-    bool result = false;
-    unsigned int attempts = 0;
-    State *temp = si_->allocState();
-
-    std::cout << "You reached GussianValidStateSampler sampleNearbyProbability()" << std::endl;
-    
-    do
-    {
-        sampler_->sampleUniformNear(state, near, distance);
-        bool v1 = si_->isValid(state);
-        sampler_->sampleGaussian(temp, state, distance);
-        bool v2 = si_->isValid(temp);
-        if (v1 != v2)
-        {
-            if (v2)
-                si_->copyState(state, temp);
-            result = true;
-        }
-        ++attempts;
-    } while (!result && attempts < attempts_);
-    si_->freeState(temp);
-    return result;
-}
