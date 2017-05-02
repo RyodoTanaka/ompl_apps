@@ -36,14 +36,14 @@
 
 #include "ompl/geometric/planners/ryodo_sbl/RyodoSBL.h"
 #include "ompl/base/goals/GoalSampleableRegion.h"
-#include "ompl/base/samplers/ProbablicUniformValidStateSampler.h"
+#include "ompl/base/samplers/ObstacleEstimationSampler.h"
 #include "ompl/tools/config/SelfConfig.h"
 #include <limits>
 #include <cassert>
 
-ompl::base::ValidStateSamplerPtr allocProbablicUniformValidStateSampler(const ompl::base::SpaceInformation *si)
+ompl::base::ValidStateSamplerPtr allocObstacleEstimationSampler(const ompl::base::SpaceInformation *si)
 {
-  return ompl::base::ValidStateSamplerPtr(new ompl::base::ProbablicUniformValidStateSampler(si));
+  return ompl::base::ValidStateSamplerPtr(new ompl::base::ObstacleEstimationSampler(si));
 }
 
 
@@ -121,7 +121,7 @@ ompl::base::PlannerStatus ompl::geometric::RyodoSBL::solve(const base::PlannerTe
 
   
   if (!sampler_){
-    si_->setValidStateSamplerAllocator(boost::bind(&allocProbablicUniformValidStateSampler, _1));
+    si_->setValidStateSamplerAllocator(boost::bind(&allocObstacleEstimationSampler, _1));
     sampler_ = si_->allocValidStateSampler();
   }
 
