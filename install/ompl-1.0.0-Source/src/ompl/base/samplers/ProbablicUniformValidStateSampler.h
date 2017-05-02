@@ -1,4 +1,4 @@
-!/*********************************************************************
+/*********************************************************************
 * Software License Agreement (BSD License)
 *
 *  Copyright (c) 2017, Kyushu Insitute of Technology
@@ -42,7 +42,7 @@
 /// @cond IGNORE
 namespace ompl
 {
-  namspace base{
+  namespace base{
     class ProbablicUniformValidStateSampler : public ValidStateSampler
     {
     public:
