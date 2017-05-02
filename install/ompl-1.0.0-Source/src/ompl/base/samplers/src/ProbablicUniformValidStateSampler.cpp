@@ -62,6 +62,8 @@ bool ompl::base::ProbablicUniformValidStateSampler::sampleNear(State *state, con
   unsigned int attempts = 0;
   bool valid = false;
 
+  std::cout << "You Reached ProbablicUniformValidStateSampler::sampleNear()" << std::endl;
+  
   do
     {
       sampler_->sampleUniformNear(state, near, distance);
