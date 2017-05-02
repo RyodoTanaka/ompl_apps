@@ -36,9 +36,16 @@
 
 #include "ompl/geometric/planners/ryodo_sbl/RyodoSBL.h"
 #include "ompl/base/goals/GoalSampleableRegion.h"
+#include "ompl/base/samplers/ProbablicUniformValidStateSampler.h"
 #include "ompl/tools/config/SelfConfig.h"
 #include <limits>
 #include <cassert>
+
+ompl::base::ValidStateSamplerPtr allocProbablicUniformValidStateSampler(const ompl::base::SpaceInformation *si)
+{
+  return ompl::base::ValidStateSamplerPtr(new ompl::base::ProbablicUniformValidStateSampler(si));
+}
+
 
 ompl::geometric::RyodoSBL::RyodoSBL(const base::SpaceInformationPtr &si) : base::Planner(si, "SBL")
 {
@@ -80,105 +87,110 @@ void ompl::geometric::RyodoSBL::freeGridMotions(Grid<MotionInfo> &grid)
 
 ompl::base::PlannerStatus ompl::geometric::RyodoSBL::solve(const base::PlannerTerminationCondition &ptc)
 {
-    checkValidity();
-    base::GoalSampleableRegion *goal = dynamic_cast<base::GoalSampleableRegion*>(pdef_->getGoal().get());
+  checkValidity();
+  base::GoalSampleableRegion *goal = dynamic_cast<base::GoalSampleableRegion*>(pdef_->getGoal().get());
 
-    if (!goal)
+  if (!goal)
     {
-        OMPL_ERROR("%s: Unknown type of goal", getName().c_str());
-        return base::PlannerStatus::UNRECOGNIZED_GOAL_TYPE;
+      OMPL_ERROR("%s: Unknown type of goal", getName().c_str());
+      return base::PlannerStatus::UNRECOGNIZED_GOAL_TYPE;
     }
 
-    while (const base::State *st = pis_.nextStart())
+  while (const base::State *st = pis_.nextStart())
     {
-        Motion *motion = new Motion(si_);
-        si_->copyState(motion->state, st);
-        motion->valid = true;
-        motion->root = motion->state;
-        addMotion(tStart_, motion);
+      Motion *motion = new Motion(si_);
+      si_->copyState(motion->state, st);
+      motion->valid = true;
+      motion->root = motion->state;
+      addMotion(tStart_, motion);
     }
 
-    if (tStart_.size == 0)
+  if (tStart_.size == 0)
     {
-        OMPL_ERROR("%s: Motion planning start tree could not be initialized!", getName().c_str());
-        return base::PlannerStatus::INVALID_START;
+      OMPL_ERROR("%s: Motion planning start tree could not be initialized!", getName().c_str());
+      return base::PlannerStatus::INVALID_START;
     }
 
-    if (!goal->couldSample())
+  if (!goal->couldSample())
     {
-        OMPL_ERROR("%s: Insufficient states in sampleable goal region", getName().c_str());
-        return base::PlannerStatus::INVALID_GOAL;
+      OMPL_ERROR("%s: Insufficient states in sampleable goal region", getName().c_str());
+      return base::PlannerStatus::INVALID_GOAL;
     }
 
-    if (!sampler_)
-        sampler_ = si_->allocValidStateSampler();
+    
 
-    OMPL_INFORM("%s: Starting planning with %d states already in datastructure", getName().c_str(), (int)(tStart_.size + tGoal_.size));
+  
+  if (!sampler_){
+    si_->setValidStateSamplerAllocator(boost::bind(&allocProbablicUniformValidStateSampler, _1));
+    sampler_ = si_->allocValidStateSampler();
+  }
 
-    std::vector<Motion*> solution;
-    base::State *xstate = si_->allocState();
+  OMPL_INFORM("%s: Starting planning with %d states already in datastructure", getName().c_str(), (int)(tStart_.size + tGoal_.size));
 
-    bool      startTree = true;
-    bool         solved = false;
+  std::vector<Motion*> solution;
+  base::State *xstate = si_->allocState();
 
-    while (ptc == false)
+  bool      startTree = true;
+  bool         solved = false;
+
+  while (ptc == false)
     {
-        TreeData &tree      = startTree ? tStart_ : tGoal_;
-        startTree = !startTree;
-        TreeData &otherTree = startTree ? tStart_ : tGoal_;
+      TreeData &tree      = startTree ? tStart_ : tGoal_;
+      startTree = !startTree;
+      TreeData &otherTree = startTree ? tStart_ : tGoal_;
 
-        // if we have not sampled too many goals already
-        if (tGoal_.size == 0 || pis_.getSampledGoalsCount() < tGoal_.size / 2)
+      // if we have not sampled too many goals already
+      if (tGoal_.size == 0 || pis_.getSampledGoalsCount() < tGoal_.size / 2)
         {
-            const base::State *st = tGoal_.size == 0 ? pis_.nextGoal(ptc) : pis_.nextGoal();
-            if (st)
+          const base::State *st = tGoal_.size == 0 ? pis_.nextGoal(ptc) : pis_.nextGoal();
+          if (st)
             {
-                Motion *motion = new Motion(si_);
-                si_->copyState(motion->state, st);
-                motion->root = motion->state;
-                motion->valid = true;
-                addMotion(tGoal_, motion);
+              Motion *motion = new Motion(si_);
+              si_->copyState(motion->state, st);
+              motion->root = motion->state;
+              motion->valid = true;
+              addMotion(tGoal_, motion);
             }
-            if (tGoal_.size == 0)
+          if (tGoal_.size == 0)
             {
-                OMPL_ERROR("%s: Unable to sample any valid states for goal tree", getName().c_str());
-                break;
+              OMPL_ERROR("%s: Unable to sample any valid states for goal tree", getName().c_str());
+              break;
             }
         }
 
-        Motion *existing = selectMotion(tree);
-        assert(existing);
-        if (!sampler_->sampleNear(xstate, existing->state, maxDistance_))
-            continue;
+      Motion *existing = selectMotion(tree);
+      assert(existing);
+      if (!sampler_->sampleNear(xstate, existing->state, maxDistance_))
+        continue;
 
-        /* create a motion */
-        Motion *motion = new Motion(si_);
-        si_->copyState(motion->state, xstate);
-        motion->parent = existing;
-        motion->root = existing->root;
-        existing->children.push_back(motion);
+      /* create a motion */
+      Motion *motion = new Motion(si_);
+      si_->copyState(motion->state, xstate);
+      motion->parent = existing;
+      motion->root = existing->root;
+      existing->children.push_back(motion);
 
-        addMotion(tree, motion);
+      addMotion(tree, motion);
 
-        if (checkSolution(!startTree, tree, otherTree, motion, solution))
+      if (checkSolution(!startTree, tree, otherTree, motion, solution))
         {
-            PathGeometric *path = new PathGeometric(si_);
-            for (unsigned int i = 0 ; i < solution.size() ; ++i)
-                path->append(solution[i]->state);
+          PathGeometric *path = new PathGeometric(si_);
+          for (unsigned int i = 0 ; i < solution.size() ; ++i)
+            path->append(solution[i]->state);
 
-            pdef_->addSolutionPath(base::PathPtr(path), false, 0.0, getName());
-            solved = true;
-            break;
+          pdef_->addSolutionPath(base::PathPtr(path), false, 0.0, getName());
+          solved = true;
+          break;
         }
     }
 
-    si_->freeState(xstate);
+  si_->freeState(xstate);
 
-    OMPL_INFORM("%s: Created %u (%u start + %u goal) states in %u cells (%u start + %u goal)",
-                getName().c_str(), tStart_.size + tGoal_.size, tStart_.size, tGoal_.size,
-                tStart_.grid.size() + tGoal_.grid.size(), tStart_.grid.size(), tGoal_.grid.size());
+  OMPL_INFORM("%s: Created %u (%u start + %u goal) states in %u cells (%u start + %u goal)",
+              getName().c_str(), tStart_.size + tGoal_.size, tStart_.size, tGoal_.size,
+              tStart_.grid.size() + tGoal_.grid.size(), tStart_.grid.size(), tGoal_.grid.size());
 
-    return solved ? base::PlannerStatus::EXACT_SOLUTION : base::PlannerStatus::TIMEOUT;
+  return solved ? base::PlannerStatus::EXACT_SOLUTION : base::PlannerStatus::TIMEOUT;
 }
 
 bool ompl::geometric::RyodoSBL::checkSolution(bool start, TreeData &tree, TreeData &otherTree, Motion *motion, std::vector<Motion*> &solution)
