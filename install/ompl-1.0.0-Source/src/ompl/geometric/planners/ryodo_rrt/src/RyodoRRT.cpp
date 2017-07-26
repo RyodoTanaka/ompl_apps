@@ -119,10 +119,13 @@ ompl::base::PlannerStatus ompl::geometric::RyodoRRT::solve(const base::PlannerTe
       return base::PlannerStatus::INVALID_START;
     }
     
-  if (!sampler_){
-    si_->setValidStateSamplerAllocator(boost::bind(&RyodoRRTallocObstacleEstimationSampler, _1));
-    sampler_ = si_->allocValidStateSampler();    
-  }
+  // if (!sampler_){
+  //   si_->setValidStateSamplerAllocator(boost::bind(&RyodoRRTallocObstacleEstimationSampler, _1));
+  //   sampler_ = si_->allocValidStateSampler();    
+  // }
+
+  if (!sampler_)
+    sampler_ = si_->allocStateSampler();
 
   OMPL_INFORM("%s: Starting planning with %u states already in datastructure", getName().c_str(), nn_->size());
 
@@ -139,57 +142,52 @@ ompl::base::PlannerStatus ompl::geometric::RyodoRRT::solve(const base::PlannerTe
       if (goal_s && rng_.uniform01() < goalBias_ && goal_s->canSample())
         goal_s->sampleGoal(rstate);
       else
-        sampler_->sample(rstate);
+        sampler_->sampleUniform(rstate);
       
       /* find closest state in the tree */
       Motion *nmotion = nn_->nearest(rmotion);
-      base::State *dstate = rstate;
+      base::State *sstate = nmotion->state;
+      base::State *gstate = rstate;
+      base::State *mstate = si_->allocState();;
+    
 
       /* find state to add */
-      double d = si_->distance(nmotion->state, rstate);
-      //std::cout << maxDistance_ << ", " << d << std::endl;
-      if (d > maxDistance_)
-        {
-          si_->getStateSpace()->interpolate(nmotion->state, rstate, maxDistance_ / d, xstate);
-          dstate = xstate;
-          auto tmp_state_1 = nmotion->state->as<ompl::base::RealVectorStateSpace::StateType>();
-          auto tmp_state_2 = xstate->as<ompl::base::RealVectorStateSpace::StateType>();
-          auto tmp_state_3 = rstate->as<ompl::base::RealVectorStateSpace::StateType>();
-          std::cout << maxDistance_ / d << std::endl;
-          for(auto i=0; i<2; i++)
-            std::cout << tmp_state_1->values[i] << " ";
-          std::cout << std::endl;
-          for(auto i=0; i<2; i++)
-            std::cout << tmp_state_2->values[i] << " ";
-          std::cout << std::endl;
-          for(auto i=0; i<2; i++)
-            std::cout << tmp_state_3->values[i] << " ";
-          std::cout << std::endl;
-          std::cout << "==========================" << std::endl;
+      while(1){
+        double d = si_->distance(sstate, gstate);
+        si_->getStateSpace()->interpolate(sstate, gstate, si_->getStateSpace()->getLongestValidSegmentLength() / d, mstate);
+        if(d<=si_->getStateSpace()->getLongestValidSegmentLength()){
+          if(si_->isValid(gstate))
+            mstate=gstate;
+          else
+            mstate=sstate;
+          break;
         }
-          
+        else if(si_->isValid(mstate)){
+          sstate=mstate;
+        } else {
+          mstate = sstate;
+          break;
+        }
+      }
+      
+      /* create a motion */
+      Motion *motion = new Motion(si_);
+      si_->copyState(motion->state, mstate);
+      motion->parent = nmotion;
 
-      if (si_->checkMotion(nmotion->state, dstate))
+      nn_->add(motion);
+      double dist = 0.0;
+      bool sat = goal->isSatisfied(motion->state, &dist);
+      if (sat)
         {
-          /* create a motion */
-          Motion *motion = new Motion(si_);
-          si_->copyState(motion->state, dstate);
-          motion->parent = nmotion;
-
-          nn_->add(motion);
-          double dist = 0.0;
-          bool sat = goal->isSatisfied(motion->state, &dist);
-          if (sat)
-            {
-              approxdif = dist;
-              solution = motion;
-              break;
-            }
-          if (dist < approxdif)
-            {
-              approxdif = dist;
-              approxsol = motion;
-            }
+          approxdif = dist;
+          solution = motion;
+          break;
+        }
+      if (dist < approxdif)
+        {
+          approxdif = dist;
+          approxsol = motion;
         }
     }
 
