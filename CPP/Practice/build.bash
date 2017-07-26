@@ -29,5 +29,10 @@ else
     make -j`nproc`
     RET=$?
     cd ${CURRENT}
+    if [ "$RET" -eq 0 ]; then
+        notify-send -i $(pwd)/../../.images/ompl-success.jpg -t 1000 'OMPL ORIG. COMPILER' ' (｀・ω・´) yes!! Original code SUCCEEDED !'
+    else
+        notify-send -i $(pwd)/../../.images/ompl-fail.jpg -t 1000 'OMPL ORIG. COMPILER' '(´･ω ･`) oops... Original code FAILED...'
+    fi
     return $RET
 fi
