@@ -49,3 +49,7 @@ target_link_libraries(GeomPlanningSE2_RyodoRRT FileSave ${Boost_LIBRARIES} ${OMP
 
 add_executable(GeomPlanningRealVector2D_RyodoRRT src/GeomPlanningRealVector2D_RyodoRRT.cpp)
 target_link_libraries(GeomPlanningRealVector2D_RyodoRRT FileSave ${Boost_LIBRARIES} ${OMPL_LIBRARIES} m)
+
+add_executable(GeomPlanningRealVector2D_RRT src/GeomPlanningRealVector2D_RRT.cpp)
+target_link_libraries(GeomPlanningRealVector2D_RRT FileSave ${Boost_LIBRARIES} ${OMPL_LIBRARIES} m)
+
