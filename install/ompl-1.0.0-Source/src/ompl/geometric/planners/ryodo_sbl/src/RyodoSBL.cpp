@@ -41,7 +41,7 @@
 #include <limits>
 #include <cassert>
 
-ompl::base::ValidStateSamplerPtr allocObstacleEstimationSampler(const ompl::base::SpaceInformation *si)
+ompl::base::ValidStateSamplerPtr RyodoSBLallocObstacleEstimationSampler(const ompl::base::SpaceInformation *si)
 {
   return ompl::base::ValidStateSamplerPtr(new ompl::base::ObstacleEstimationSampler(si));
 }
@@ -121,7 +121,7 @@ ompl::base::PlannerStatus ompl::geometric::RyodoSBL::solve(const base::PlannerTe
 
   
   if (!sampler_){
-    si_->setValidStateSamplerAllocator(boost::bind(&allocObstacleEstimationSampler, _1));
+    si_->setValidStateSamplerAllocator(boost::bind(&RyodoSBLallocObstacleEstimationSampler, _1));
     sampler_ = si_->allocValidStateSampler();
   }
 

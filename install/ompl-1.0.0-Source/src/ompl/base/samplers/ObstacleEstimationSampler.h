@@ -54,6 +54,12 @@ namespace ompl
       virtual bool sampleNear(State *state, const State *near, const double distance);
 
     protected:
+      void minus_function();
+      void plus_function();
+      double minus_func_max;
+      double plus_func_max;
+      
+      
       /** \brief The sampler to build upon */
             StateSamplerPtr sampler_;
     };
