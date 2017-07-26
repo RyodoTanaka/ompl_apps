@@ -36,33 +36,44 @@
 
 #include "ompl/base/samplers/ObstacleEstimationSampler.h"
 #include "ompl/base/SpaceInformation.h"
+#include <ompl/base/spaces/RealVectorStateSpace.h>
+#include <ompl/base/spaces/SE2StateSpace.h>
+#include <ompl/base/State.h>
+#include <ompl/base/StateSpace.h>
+#include <cmath>
 
 ompl::base::ObstacleEstimationSampler::ObstacleEstimationSampler(const SpaceInformation *si) :
       ValidStateSampler(si), sampler_(si->allocStateSampler())
 {
-  name_ = "probablic_uniform";
+  name_ = "obstacle_estimation";
 }
 
 
 bool ompl::base::ObstacleEstimationSampler::sample(State *state)
 {
-    unsigned int attempts = 0;
-    bool valid = false;
-    do
+  unsigned int attempts = 0;
+  bool valid = false;
+
+  // auto rstate = state->as<ompl::base::RealVectorStateSpace::StateType>();
+  // std::cout << "=== State is ===" << std::endl;
+  // for(auto i=0; i<2; i++)
+  //   std::cout << rstate->values[i] << " ";
+  // std::cout << std::endl;
+  // std::cout << "================" << std::endl;
+    
+  do
     {
-        sampler_->sampleUniform(state);
-        valid = si_->isValid(state);
-        ++attempts;
+      sampler_->sampleUniform(state);
+      valid = si_->isValid(state);
+      ++attempts;
     } while (!valid && attempts < attempts_);
-    return valid;
+  return valid;
 }
 
 bool ompl::base::ObstacleEstimationSampler::sampleNear(State *state, const State *near, const double distance)
 {
   unsigned int attempts = 0;
   bool valid = false;
-
-  std::cout << "You Reached ObstacleEstimationSampler::sampleNear()" << std::endl;
   
   do
     {
@@ -70,5 +81,16 @@ bool ompl::base::ObstacleEstimationSampler::sampleNear(State *state, const State
       valid = si_->isValid(state);
       ++attempts;
     } while (!valid && attempts < attempts_);
+
+  // if(valid){
+  //   auto rstate = state->as<ompl::base::CompoundStateSpace::StateType>()->as<ompl::base::RealVectorStateSpace::StateType>(0);
+  //   std::cout << "size : " << sizeof(rstate->values) << std::endl;
+  //   std::cout << "=== State is ===" << std::endl;
+  //   for(auto i=0; i<2; i++)
+  //     std::cout << rstate->values[i] << " ";
+  //   std::cout << std::endl;
+  //   std::cout << "=== ============" << std::endl;
+  // }
+
   return valid;
 }
