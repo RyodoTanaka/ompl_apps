@@ -27,5 +27,7 @@ else
     cd ${SCRIPT_PATH}/build
     cmake .. -DCMAKE_FIND_DEBUG_MODE=1
     make -j`nproc`
+    RET=$?
     cd ${CURRENT}
+    return $RET
 fi

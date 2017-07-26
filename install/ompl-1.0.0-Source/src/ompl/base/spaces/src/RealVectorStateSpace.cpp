@@ -60,6 +60,7 @@ void ompl::base::RealVectorStateSampler::sampleUniformNear(State *state, const S
 
     RealVectorStateSpace::StateType *rstate = static_cast<RealVectorStateSpace::StateType*>(state);
     const RealVectorStateSpace::StateType *rnear = static_cast<const RealVectorStateSpace::StateType*>(near);
+    
     for (unsigned int i = 0 ; i < dim ; ++i)
         rstate->values[i] =
             rng_.uniformReal(std::max(bounds.low[i], rnear->values[i] - distance),

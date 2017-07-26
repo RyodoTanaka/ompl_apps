@@ -74,7 +74,7 @@ public:
 
         if (z>.25 && z<.5)
         {
-            double x = rng_.uniformReal(0,1.8), y = rng_.uniformReal(0,.2);
+          double x = rng_.uniformReal(0,1.8), y = rng_.uniformReal(0,.2);
             switch(rng_.uniformInt(0,3))
             {
                 case 0: val[0]=x-1;  val[1]=y-1;
@@ -98,6 +98,7 @@ public:
         throw ompl::Exception("MyValidStateSampler::sampleNear", "not implemented");
         return false;
     }
+  
 protected:
     ompl::RNG rng_;
 };

@@ -1,7 +1,7 @@
 /*********************************************************************
 * Software License Agreement (BSD License)
 *
-*  Copyright (c) 2010, Rice University
+*  Copyright (c) 2017, Kyushu Insitute of Technology
 *  All rights reserved.
 *
 *  Redistribution and use in source and binary forms, with or without
@@ -32,44 +32,32 @@
 *  POSSIBILITY OF SUCH DAMAGE.
 *********************************************************************/
 
-/* Author: Ioan Sucan */
+#ifndef OMPL_BASE_SAMPLERS_PROBABLIC_UNIFORM_VALID_STATE_SAMPLER_
+#define OMPL_BASE_SAMPLERS_PROBABLIC_UNIFORM_VALID_STATE_SAMPLER_
 
-#ifndef OMPL_BASE_SAMPLERS_UNIFORM_VALID_STATE_SAMPLER_
-#define OMPL_BASE_SAMPLERS_UNIFORM_VALID_STATE_SAMPLER_
-
+/* Author: Ryodo Tanaka */
 #include "ompl/base/ValidStateSampler.h"
 #include "ompl/base/StateSampler.h"
 
+/// @cond IGNORE
 namespace ompl
 {
-    namespace base
+  namespace base{
+    class ObstacleEstimationSampler : public ValidStateSampler
     {
+    public:
+      ObstacleEstimationSampler(const SpaceInformation *si);
 
+      virtual ~ObstacleEstimationSampler(){};
 
-        /** \brief A state sampler that only samples valid states, uniformly. */
-        class UniformValidStateSampler : public ValidStateSampler
-        {
-        public:
+      virtual bool sample(State *state);
+      virtual bool sampleNear(State *state, const State *near, const double distance);
 
-            /** \brief Constructor */
-            UniformValidStateSampler(const SpaceInformation *si);
-
-            virtual ~UniformValidStateSampler()
-            {
-            }
-
-            virtual bool sample(State *state);
-            virtual bool sampleNear(State *state, const State *near, const double distance);
-            
-        protected:
-
-            /** \brief The sampler to build upon */
+    protected:
+      /** \brief The sampler to build upon */
             StateSamplerPtr sampler_;
-
-        };
-
-    }
+    };
+  }
 }
 
-
-#endif
+# endif

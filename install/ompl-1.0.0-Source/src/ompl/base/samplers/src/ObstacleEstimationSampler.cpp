@@ -1,7 +1,7 @@
 /*********************************************************************
 * Software License Agreement (BSD License)
 *
-*  Copyright (c) 2010, Rice University
+*  Copyright (c) 2017, Kyushu Institute of Technology
 *  All rights reserved.
 *
 *  Redistribution and use in source and binary forms, with or without
@@ -32,44 +32,43 @@
 *  POSSIBILITY OF SUCH DAMAGE.
 *********************************************************************/
 
-/* Author: Ioan Sucan */
+/* Author: Ryodo Tanaka */
 
-#ifndef OMPL_BASE_SAMPLERS_UNIFORM_VALID_STATE_SAMPLER_
-#define OMPL_BASE_SAMPLERS_UNIFORM_VALID_STATE_SAMPLER_
+#include "ompl/base/samplers/ObstacleEstimationSampler.h"
+#include "ompl/base/SpaceInformation.h"
 
-#include "ompl/base/ValidStateSampler.h"
-#include "ompl/base/StateSampler.h"
-
-namespace ompl
+ompl::base::ObstacleEstimationSampler::ObstacleEstimationSampler(const SpaceInformation *si) :
+      ValidStateSampler(si), sampler_(si->allocStateSampler())
 {
-    namespace base
-    {
-
-
-        /** \brief A state sampler that only samples valid states, uniformly. */
-        class UniformValidStateSampler : public ValidStateSampler
-        {
-        public:
-
-            /** \brief Constructor */
-            UniformValidStateSampler(const SpaceInformation *si);
-
-            virtual ~UniformValidStateSampler()
-            {
-            }
-
-            virtual bool sample(State *state);
-            virtual bool sampleNear(State *state, const State *near, const double distance);
-            
-        protected:
-
-            /** \brief The sampler to build upon */
-            StateSamplerPtr sampler_;
-
-        };
-
-    }
+  name_ = "probablic_uniform";
 }
 
 
-#endif
+bool ompl::base::ObstacleEstimationSampler::sample(State *state)
+{
+    unsigned int attempts = 0;
+    bool valid = false;
+    do
+    {
+        sampler_->sampleUniform(state);
+        valid = si_->isValid(state);
+        ++attempts;
+    } while (!valid && attempts < attempts_);
+    return valid;
+}
+
+bool ompl::base::ObstacleEstimationSampler::sampleNear(State *state, const State *near, const double distance)
+{
+  unsigned int attempts = 0;
+  bool valid = false;
+
+  std::cout << "You Reached ObstacleEstimationSampler::sampleNear()" << std::endl;
+  
+  do
+    {
+      sampler_->sampleUniformNear(state, near, distance);
+      valid = si_->isValid(state);
+      ++attempts;
+    } while (!valid && attempts < attempts_);
+  return valid;
+}

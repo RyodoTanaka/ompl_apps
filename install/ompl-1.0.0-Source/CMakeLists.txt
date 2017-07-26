@@ -4,7 +4,7 @@ if(NOT ${CMAKE_VERSION} VERSION_LESS 3.0.0)
 endif()
 project(ompl CXX C)
 
-set(CMAKE_CXX_FLAGS "-Wall -std=c++11")
+set(CMAKE_CXX_FLAGS "-Wall -std=c++11 -g")
 
 # set the default build type
 if (NOT CMAKE_BUILD_TYPE)
