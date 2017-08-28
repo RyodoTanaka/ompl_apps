@@ -71,6 +71,8 @@ void ompl::geometric::RyodoRRT::clear()
     freeMemory();
     if (nn_)
         nn_->clear();
+    if (gmm_nn_)
+      gmm_nn_->clear();
     lastGoalMotion_ = NULL;
 }
 
@@ -83,19 +85,35 @@ void ompl::geometric::RyodoRRT::setup()
   if (!nn_)
     nn_.reset(tools::SelfConfig::getDefaultNearestNeighbors<Motion*>(si_->getStateSpace()));
   nn_->setDistanceFunction(boost::bind(&RyodoRRT::distanceFunction, this, _1, _2));
+
+   if (!gmm_nn_)
+    gmm_nn_.reset(tools::SelfConfig::getDefaultNearestNeighbors<Motion*>(si_->getStateSpace()));
+  gmm_nn_->setDistanceFunction(boost::bind(&RyodoRRT::distanceFunction, this, _1, _2));
 }
 
 void ompl::geometric::RyodoRRT::freeMemory()
 {
-    if (nn_)
+  if (nn_)
     {
-        std::vector<Motion*> motions;
-        nn_->list(motions);
-        for (unsigned int i = 0 ; i < motions.size() ; ++i)
+      std::vector<Motion*> motions;
+      nn_->list(motions);
+      for (unsigned int i = 0 ; i < motions.size() ; ++i)
         {
-            if (motions[i]->state)
-                si_->freeState(motions[i]->state);
-            delete motions[i];
+          if (motions[i]->state)
+            si_->freeState(motions[i]->state);
+          delete motions[i];
+        }
+    }
+
+  if (gmm_nn_)
+    {
+      std::vector<Motion*> motions;
+      gmm_nn_->list(motions);
+      for (unsigned int i = 0 ; i < motions.size() ; ++i)
+        {
+          if (motions[i]->state)
+            si_->freeState(motions[i]->state);
+          delete motions[i];
         }
     }
 }
@@ -109,11 +127,20 @@ ompl::base::PlannerStatus ompl::geometric::RyodoRRT::solve(const base::PlannerTe
   while (const base::State *st = pis_.nextStart())
     {
       Motion *motion = new Motion(si_);
+      Motion *gmm_motion = new Motion(si_);
       si_->copyState(motion->state, st);
+      si_->copyState(gmm_motion->state, st);
       nn_->add(motion);
+      gmm_nn_->add(gmm_motion);
     }
 
   if (nn_->size() == 0)
+    {
+      OMPL_ERROR("%s: There are no valid initial states!", getName().c_str());
+      return base::PlannerStatus::INVALID_START;
+    }
+
+   if (gmm_nn_->size() == 0)
     {
       OMPL_ERROR("%s: There are no valid initial states!", getName().c_str());
       return base::PlannerStatus::INVALID_START;
