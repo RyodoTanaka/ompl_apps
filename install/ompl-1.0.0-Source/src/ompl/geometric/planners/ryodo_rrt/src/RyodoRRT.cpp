@@ -153,8 +153,11 @@ ompl::base::PlannerStatus ompl::geometric::RyodoRRT::solve(const base::PlannerTe
 
       /* find state to add */
       while(1){
+        // sstate と gstate のユークリッド距離を取得
         double d = si_->distance(sstate, gstate);
+        // mstateにsstate -> gstate 方向で，εユークリッド距離伸ばしたノードを代入
         si_->getStateSpace()->interpolate(sstate, gstate, si_->getStateSpace()->getLongestValidSegmentLength() / d, mstate);
+        // ① start->goalの距離がε以下なら，start or goal のどちらかをmstateにする
         if(d<=si_->getStateSpace()->getLongestValidSegmentLength()){
           if(si_->isValid(gstate))
             mstate=gstate;
@@ -162,9 +165,13 @@ ompl::base::PlannerStatus ompl::geometric::RyodoRRT::solve(const base::PlannerTe
             mstate=sstate;
           break;
         }
+        // ① 分岐
+        // ② mstateがフリーならsstate <- mstateで更新
         else if(si_->isValid(mstate)){
           sstate=mstate;
-        } else {
+        }
+        // ② 分岐 mstate <- sstate で break
+        else {
           mstate = sstate;
           break;
         }
