@@ -39,6 +39,7 @@
 
 #include "ompl/geometric/planners/PlannerIncludes.h"
 #include "ompl/datastructures/NearestNeighbors.h"
+#include <vector>
 
 namespace ompl
 {
@@ -182,6 +183,11 @@ namespace ompl
 
       /** \brief The most recent goal motion.  Used for PlannerData computation */
       Motion                                         *lastGoalMotion_;
+
+      std::vector<float> pos_list;
+      std::vector<float> neg_list;
+      
+      
     };
 
   }

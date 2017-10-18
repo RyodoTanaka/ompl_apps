@@ -118,6 +118,12 @@ void ompl::geometric::RyodoRRT::freeMemory()
     }
 }
 
+
+bool CheckProbablisticCollision(const base::State target)
+{
+  
+}
+
 ompl::base::PlannerStatus ompl::geometric::RyodoRRT::solve(const base::PlannerTerminationCondition &ptc)
 {
   checkValidity();
@@ -140,7 +146,7 @@ ompl::base::PlannerStatus ompl::geometric::RyodoRRT::solve(const base::PlannerTe
       return base::PlannerStatus::INVALID_START;
     }
 
-   if (gmm_nn_->size() == 0)
+  if (gmm_nn_->size() == 0)
     {
       OMPL_ERROR("%s: There are no valid initial states!", getName().c_str());
       return base::PlannerStatus::INVALID_START;
@@ -193,14 +199,17 @@ ompl::base::PlannerStatus ompl::geometric::RyodoRRT::solve(const base::PlannerTe
           break;
         }
         // ① 分岐
-        // ② mstateがフリーならsstate <- mstateで更新
-        else if(si_->isValid(mstate)){
-          sstate=mstate;
-        }
-        // ② 分岐 mstate <- sstate で break
-        else {
-          mstate = sstate;
-          break;
+        else{
+          
+          // ② mstateがフリーならsstate <- mstateで更新
+          if(si_->isValid(mstate)){
+            sstate=mstate;
+          }
+          // ② 分岐 mstate <- sstate で break
+          else {
+            mstate = sstate;
+            break;
+          }
         }
       }
       
