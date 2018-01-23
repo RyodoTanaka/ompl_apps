@@ -34,6 +34,6 @@ else
     else
         notify-send -i $(pwd)/../../.images/ompl-fail.jpg -t 1000 'OMPL ORIG. COMPILER' '(´･ω ･`) oops... Original code FAILED...'
     fi
-    source setup.bash
+    source .setup.bash
     return $RET
 fi
