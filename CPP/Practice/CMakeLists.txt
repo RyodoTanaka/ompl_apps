@@ -31,16 +31,6 @@ add_subdirectory(src/IO)
 add_executable(GeomPlanningSE2_SBL src/GeomPlanningSE2_SBL.cpp)
 target_link_libraries(GeomPlanningSE2_SBL FileSave ${Boost_LIBRARIES} ${OMPL_LIBRARIES} m)
 
-add_executable(GeomPlanningSE2_RyodoSBL src/GeomPlanningSE2_RyodoSBL.cpp)
-target_link_libraries(GeomPlanningSE2_RyodoSBL FileSave ${Boost_LIBRARIES} ${OMPL_LIBRARIES} m)
-
-add_executable(GeomPlanningSE2_RyodoRRT src/GeomPlanningSE2_RyodoRRT.cpp)
-target_link_libraries(GeomPlanningSE2_RyodoRRT FileSave ${Boost_LIBRARIES} ${OMPL_LIBRARIES} m)
-
-
-add_executable(GeomPlanningRealVector2D_RyodoRRT src/GeomPlanningRealVector2D_RyodoRRT.cpp)
-target_link_libraries(GeomPlanningRealVector2D_RyodoRRT FileSave ${Boost_LIBRARIES} ${OMPL_LIBRARIES} m)
-
 add_executable(GeomPlanningRealVector2D_RRT src/GeomPlanningRealVector2D_RRT.cpp)
 target_link_libraries(GeomPlanningRealVector2D_RRT FileSave ${Boost_LIBRARIES} ${OMPL_LIBRARIES} m)
 
