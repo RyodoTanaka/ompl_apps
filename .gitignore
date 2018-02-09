@@ -1,9 +1,8 @@
 libs/
 fcl*/
 libccd*/
-ompl-1.1*/
-ompl-1.2*/
-ompl-1.3*/
+ompl*/
 bin/
 build/
 result/
+core

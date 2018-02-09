@@ -6,7 +6,7 @@ set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
 set(CMAKE_CXX_FLAGS_DEBUG "-g -O0")
 
-set(CMAKE_BUILD_TYPE Release)
+set(CMAKE_BUILD_TYPE Debug)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ../bin)
 
@@ -28,17 +28,12 @@ find_package(Boost COMPONENTS system REQUIRED)
 # Common
 add_subdirectory(src/IO)
 
-add_executable(GeomPlanningSE2 src/GeomPlanningSE2.cpp)
-target_link_libraries(GeomPlanningSE2 FileSave ${Boost_LIBRARIES} ${OMPL_LIBRARIES} m)
-
-add_executable(GeomPlanningSE2_PRM src/GeomPlanningSE2_PRM.cpp)
-target_link_libraries(GeomPlanningSE2_PRM FileSave ${Boost_LIBRARIES} ${OMPL_LIBRARIES} m)
-
-add_executable(GeomPlanningSE2_Info src/GeomPlanningSE2_Info.cpp)
-target_link_libraries(GeomPlanningSE2_Info FileSave ${Boost_LIBRARIES} ${OMPL_LIBRARIES} m)
-
 add_executable(GeomPlanningSE2_SBL src/GeomPlanningSE2_SBL.cpp)
 target_link_libraries(GeomPlanningSE2_SBL FileSave ${Boost_LIBRARIES} ${OMPL_LIBRARIES} m)
 
-# add_executable(GeomPlanningSE3 src/GeomPlanningSE3.cpp)
-# target_link_libraries(GeomPlanningSE3 FileSave ${Boost_LIBRARIES} ${OMPL_LIBRARIES} m)
+add_executable(GeomPlanningRealVector2D_RRT src/GeomPlanningRealVector2D_RRT.cpp)
+target_link_libraries(GeomPlanningRealVector2D_RRT FileSave ${Boost_LIBRARIES} ${OMPL_LIBRARIES} m)
+
+add_executable(GeomPlanningRealVector2D_RRT_Estimate src/GeomPlanningRealVector2D_RRT_Estimate.cpp)
+target_link_libraries(GeomPlanningRealVector2D_RRT_Estimate FileSave ${Boost_LIBRARIES} ${OMPL_LIBRARIES} m)
+
