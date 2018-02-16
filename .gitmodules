@@ -1,0 +1,3 @@
+[submodule "install/ompl"]
+	path = install/ompl
+	url = git@github.com:RyodoTanaka/ompl.git
