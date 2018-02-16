@@ -37,3 +37,6 @@ target_link_libraries(GeomPlanningRealVector2D_RRT FileSave ${Boost_LIBRARIES} $
 add_executable(GeomPlanningRealVector2D_RRT_Estimate src/GeomPlanningRealVector2D_RRT_Estimate.cpp)
 target_link_libraries(GeomPlanningRealVector2D_RRT_Estimate FileSave ${Boost_LIBRARIES} ${OMPL_LIBRARIES} m)
 
+add_executable(GeomPlanningRealVector2D_RRT_Connect_Estimate src/GeomPlanningRealVector2D_RRT_Connect_Estimate.cpp)
+target_link_libraries(GeomPlanningRealVector2D_RRT_Connect_Estimate FileSave ${Boost_LIBRARIES} ${OMPL_LIBRARIES} m)
+
