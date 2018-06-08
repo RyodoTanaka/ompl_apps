@@ -1,3 +1,6 @@
 [submodule "install/ompl"]
 	path = install/ompl
 	url = git@github.com:RyodoTanaka/ompl.git
+[submodule "cpp/ompl_research"]
+	path = cpp/ompl_research
+	url = git@github.com:RyodoTanaka/ompl_research.git
