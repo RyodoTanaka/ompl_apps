@@ -13,7 +13,7 @@ On `CPP/NAIST` directory, there are samples that texted on the [NAIST Online Tex
 | **Kernel** | 3.13.0-108-generic |
 
 ## Installation
-### Installation of OMPL
+### Installation of OMPL with shell script
 **!! If you want to compile with NAIST samples, BUILD 1.0.0 VERSION !!**  
 Based on the [official installation shell script](http://ompl.kavrakilab.org/installation.html), I modified something that is not worked.  
 If you've not installed the OMPL library yet, run the shell script like following. And this script bring you OMPL-1.3.0 version.
@@ -34,6 +34,13 @@ And then, You can choose the option as you wish.
 If you choose `--python` or `--app` option, OMPL will be installed with Python bindings.  
 BUT, It takes **ABOUT 8 HOURS** or more....
 This is issued on [here](https://bitbucket.org/ompl/ompl/issues/305/omplapp-installation-stuck-at-geometric) and [here](https://bitbucket.org/ompl/ompl/issues/258/update-bindings-after-reinstalling-ompl).
+
+## Installation for developer in C++
+#### 1. Go to `cpp/example` directory.
+#### 2. Just execute `compile.bash` script.
+#### 3. If you add your own program...
+Just add configuration into `CMakeLists.txt`.  
+And go to 2. procedure.
 
 ## How to execute ?
 ### CPP programs
